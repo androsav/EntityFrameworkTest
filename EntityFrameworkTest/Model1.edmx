@@ -1,0 +1,408 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище entityTestModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="Email_Id" />
+          </Key>
+          <Property Name="Email_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Email_Name" Type="varchar(max)" />
+          <Property Name="Employee_Id" Type="uniqueidentifier" />
+          <Property Name="EmailType_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="EmailType">
+          <Key>
+            <PropertyRef Name="EmailType_Id" />
+          </Key>
+          <Property Name="EmailType_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmailType_Name" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Employee_Id" />
+          </Key>
+          <Property Name="Employee_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Employee_FIO" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="EmployeeToEmpTask">
+          <Key>
+            <PropertyRef Name="Employee_Id" />
+            <PropertyRef Name="Task_Id" />
+          </Key>
+          <Property Name="Employee_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Task_Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmpTask">
+          <Key>
+            <PropertyRef Name="Task_Id" />
+          </Key>
+          <Property Name="Task_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Task_Name" Type="varchar(max)" />
+          <Property Name="Task_DeadLine" Type="varchar(max)" />
+          <Property Name="Task_PrevCompleted" Type="bit" Nullable="false" />
+          <Property Name="Task_Completed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Phone">
+          <Key>
+            <PropertyRef Name="Phone_Id" />
+          </Key>
+          <Property Name="Phone_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Phone_Number" Type="varchar(max)" />
+          <Property Name="Employee_Id" Type="uniqueidentifier" />
+          <Property Name="PhoneType_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="PhoneType">
+          <Key>
+            <PropertyRef Name="PhoneType_Id" />
+          </Key>
+          <Property Name="PhoneType_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PhoneType_Name" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_Email_EmailType">
+          <End Role="EmailType" Type="Self.EmailType" Multiplicity="0..1" />
+          <End Role="Email" Type="Self.Email" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmailType">
+              <PropertyRef Name="EmailType_Id" />
+            </Principal>
+            <Dependent Role="Email">
+              <PropertyRef Name="EmailType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Email_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Email" Type="Self.Email" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Email">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeToTask_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="EmployeeToEmpTask" Type="Self.EmployeeToEmpTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="EmployeeToEmpTask">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeToTask_Task">
+          <End Role="EmpTask" Type="Self.EmpTask" Multiplicity="1" />
+          <End Role="EmployeeToEmpTask" Type="Self.EmployeeToEmpTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmpTask">
+              <PropertyRef Name="Task_Id" />
+            </Principal>
+            <Dependent Role="EmployeeToEmpTask">
+              <PropertyRef Name="Task_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Phone_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Phone" Type="Self.Phone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Phone">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Phone_PhoneType">
+          <End Role="PhoneType" Type="Self.PhoneType" Multiplicity="0..1" />
+          <End Role="Phone" Type="Self.Phone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhoneType">
+              <PropertyRef Name="PhoneType_Id" />
+            </Principal>
+            <Dependent Role="Phone">
+              <PropertyRef Name="PhoneType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище entityTestModelContainer">
+          <EntitySet Name="Email" EntityType="Self.Email" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmailType" EntityType="Self.EmailType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeToEmpTask" EntityType="Self.EmployeeToEmpTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmpTask" EntityType="Self.EmpTask" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Phone" EntityType="Self.Phone" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhoneType" EntityType="Self.PhoneType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Email_EmailType" Association="Self.FK_Email_EmailType">
+            <End Role="EmailType" EntitySet="EmailType" />
+            <End Role="Email" EntitySet="Email" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Email_Employee" Association="Self.FK_Email_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Email" EntitySet="Email" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeToTask_Employee" Association="Self.FK_EmployeeToTask_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeToEmpTask" EntitySet="EmployeeToEmpTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeToTask_Task" Association="Self.FK_EmployeeToTask_Task">
+            <End Role="EmpTask" EntitySet="EmpTask" />
+            <End Role="EmployeeToEmpTask" EntitySet="EmployeeToEmpTask" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Phone_Employee" Association="Self.FK_Phone_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Phone" EntitySet="Phone" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Phone_PhoneType" Association="Self.FK_Phone_PhoneType">
+            <End Role="PhoneType" EntitySet="PhoneType" />
+            <End Role="Phone" EntitySet="Phone" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="entityTestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Email">
+          <Key>
+            <PropertyRef Name="Email_Id" />
+          </Key>
+          <Property Name="Email_Id" Type="Guid" Nullable="false" />
+          <Property Name="Email_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Employee_Id" Type="Guid" />
+          <Property Name="EmailType_Id" Type="Guid" />
+          <NavigationProperty Name="EmailType" Relationship="Self.FK_Email_EmailType" FromRole="Email" ToRole="EmailType" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Email_Employee" FromRole="Email" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="EmailType">
+          <Key>
+            <PropertyRef Name="EmailType_Id" />
+          </Key>
+          <Property Name="EmailType_Id" Type="Guid" Nullable="false" />
+          <Property Name="EmailType_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Email" Relationship="Self.FK_Email_EmailType" FromRole="EmailType" ToRole="Email" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Employee_Id" />
+          </Key>
+          <Property Name="Employee_Id" Type="Guid" Nullable="false" />
+          <Property Name="Employee_FIO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Email" Relationship="Self.FK_Email_Employee" FromRole="Employee" ToRole="Email" />
+          <NavigationProperty Name="Phone" Relationship="Self.FK_Phone_Employee" FromRole="Employee" ToRole="Phone" />
+          <NavigationProperty Name="EmpTask" Relationship="Self.EmployeeToEmpTask" FromRole="Employee" ToRole="EmpTask" />
+        </EntityType>
+        <EntityType Name="EmpTask">
+          <Key>
+            <PropertyRef Name="Task_Id" />
+          </Key>
+          <Property Name="Task_Id" Type="Guid" Nullable="false" />
+          <Property Name="Task_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Task_DeadLine" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Task_PrevCompleted" Type="Boolean" Nullable="false" />
+          <Property Name="Task_Completed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.EmployeeToEmpTask" FromRole="EmpTask" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Phone">
+          <Key>
+            <PropertyRef Name="Phone_Id" />
+          </Key>
+          <Property Name="Phone_Id" Type="Guid" Nullable="false" />
+          <Property Name="Phone_Number" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Employee_Id" Type="Guid" />
+          <Property Name="PhoneType_Id" Type="Guid" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Phone_Employee" FromRole="Phone" ToRole="Employee" />
+          <NavigationProperty Name="PhoneType" Relationship="Self.FK_Phone_PhoneType" FromRole="Phone" ToRole="PhoneType" />
+        </EntityType>
+        <EntityType Name="PhoneType">
+          <Key>
+            <PropertyRef Name="PhoneType_Id" />
+          </Key>
+          <Property Name="PhoneType_Id" Type="Guid" Nullable="false" />
+          <Property Name="PhoneType_Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Phone" Relationship="Self.FK_Phone_PhoneType" FromRole="PhoneType" ToRole="Phone" />
+        </EntityType>
+        <Association Name="FK_Email_EmailType">
+          <End Role="EmailType" Type="Self.EmailType" Multiplicity="0..1" />
+          <End Role="Email" Type="Self.Email" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmailType">
+              <PropertyRef Name="EmailType_Id" />
+            </Principal>
+            <Dependent Role="Email">
+              <PropertyRef Name="EmailType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Email_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Email" Type="Self.Email" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Email">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Phone_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Phone" Type="Self.Phone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Phone">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Phone_PhoneType">
+          <End Role="PhoneType" Type="Self.PhoneType" Multiplicity="0..1" />
+          <End Role="Phone" Type="Self.Phone" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PhoneType">
+              <PropertyRef Name="PhoneType_Id" />
+            </Principal>
+            <Dependent Role="Phone">
+              <PropertyRef Name="PhoneType_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="EmployeeToEmpTask">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <End Role="EmpTask" Type="Self.EmpTask" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="entityTestEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Email" EntityType="Self.Email" />
+          <EntitySet Name="EmailType" EntityType="Self.EmailType" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" />
+          <EntitySet Name="EmpTask" EntityType="Self.EmpTask" />
+          <EntitySet Name="Phone" EntityType="Self.Phone" />
+          <EntitySet Name="PhoneType" EntityType="Self.PhoneType" />
+          <AssociationSet Name="FK_Email_EmailType" Association="Self.FK_Email_EmailType">
+            <End Role="EmailType" EntitySet="EmailType" />
+            <End Role="Email" EntitySet="Email" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Email_Employee" Association="Self.FK_Email_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Email" EntitySet="Email" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Phone_Employee" Association="Self.FK_Phone_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Phone" EntitySet="Phone" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Phone_PhoneType" Association="Self.FK_Phone_PhoneType">
+            <End Role="PhoneType" EntitySet="PhoneType" />
+            <End Role="Phone" EntitySet="Phone" />
+          </AssociationSet>
+          <AssociationSet Name="EmployeeToEmpTask" Association="Self.EmployeeToEmpTask">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmpTask" EntitySet="EmpTask" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище entityTestModelContainer" CdmEntityContainer="entityTestEntities1">
+          <EntitySetMapping Name="Email">
+            <EntityTypeMapping TypeName="entityTestModel.Email">
+              <MappingFragment StoreEntitySet="Email">
+                <ScalarProperty Name="Email_Id" ColumnName="Email_Id" />
+                <ScalarProperty Name="Email_Name" ColumnName="Email_Name" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="EmailType_Id" ColumnName="EmailType_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmailType">
+            <EntityTypeMapping TypeName="entityTestModel.EmailType">
+              <MappingFragment StoreEntitySet="EmailType">
+                <ScalarProperty Name="EmailType_Id" ColumnName="EmailType_Id" />
+                <ScalarProperty Name="EmailType_Name" ColumnName="EmailType_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="entityTestModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Employee_FIO" ColumnName="Employee_FIO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmpTask">
+            <EntityTypeMapping TypeName="entityTestModel.EmpTask">
+              <MappingFragment StoreEntitySet="EmpTask">
+                <ScalarProperty Name="Task_Id" ColumnName="Task_Id" />
+                <ScalarProperty Name="Task_Name" ColumnName="Task_Name" />
+                <ScalarProperty Name="Task_DeadLine" ColumnName="Task_DeadLine" />
+                <ScalarProperty Name="Task_PrevCompleted" ColumnName="Task_PrevCompleted" />
+                <ScalarProperty Name="Task_Completed" ColumnName="Task_Completed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Phone">
+            <EntityTypeMapping TypeName="entityTestModel.Phone">
+              <MappingFragment StoreEntitySet="Phone">
+                <ScalarProperty Name="Phone_Id" ColumnName="Phone_Id" />
+                <ScalarProperty Name="Phone_Number" ColumnName="Phone_Number" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="PhoneType_Id" ColumnName="PhoneType_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhoneType">
+            <EntityTypeMapping TypeName="entityTestModel.PhoneType">
+              <MappingFragment StoreEntitySet="PhoneType">
+                <ScalarProperty Name="PhoneType_Id" ColumnName="PhoneType_Id" />
+                <ScalarProperty Name="PhoneType_Name" ColumnName="PhoneType_Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="EmployeeToEmpTask" TypeName="entityTestModel.EmployeeToEmpTask" StoreEntitySet="EmployeeToEmpTask">
+            <EndProperty Name="Employee">
+              <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+            </EndProperty>
+            <EndProperty Name="EmpTask">
+              <ScalarProperty Name="Task_Id" ColumnName="Task_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
